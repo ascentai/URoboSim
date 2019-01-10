@@ -262,10 +262,9 @@ FString URFactoryRURDFData::AdeptXml(const FString PathToXml,
 					// The FBXImporter works with this .fbx path.
 					Factory->CurrentFilename = Elem.Value;
 
-					UObject* Mesh = Factory->FactoryCreateBinary(UStaticMesh::StaticClass(),
-						PackageForMeshes, FName(*Elem.Key), Flags | RF_Transactional,
-						nullptr, TEXT("fbx"), NewBuffer, nullptr,
-						GWarn, bAndOutOperationCancelled);
+					UObject* Mesh = Factory->FactoryCreateFile(UStaticMesh::StaticClass(),
+						PackageForMeshes, FName(*Elem.Key), Flags | RF_Transactional, FString(*Elem.Value),
+						nullptr, GWarn, bAndOutOperationCancelled);
 
 					// If Operation Cancelled
 					if (bAndOutOperationCancelled) {

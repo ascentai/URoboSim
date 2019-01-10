@@ -94,12 +94,12 @@ public:
 		float damping;
 		float friction;
 
-		bool operator== (const FRJoint &Joint)
+		bool operator== (const FRJoint &Joint) const
 		{
 			return Name.Equals(Joint.Name);
 		}
 
-		bool operator== (const FString &String)
+		bool operator== (const FString &String) const
 		{
 			return Name.Equals(String);
 		}
@@ -141,11 +141,11 @@ public:
 			FVector Scale;
 		} Collision;
 
-		bool operator== (const FRLink &Link)
+        bool operator== (const FRLink &Link) const
 		{
 			return Name.Equals(Link.Name);
 		}
-		bool operator== (const FString &String)
+		bool operator== (const FString &String) const
 		{
 			return Name.Equals(String);
 		}
@@ -164,6 +164,7 @@ public:
 	virtual void OnConstruction(const FTransform &Transform) override;
 
 	// The root component
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Map")
 	USceneComponent* Root;
 
 	// Adds the Link data to the Robot

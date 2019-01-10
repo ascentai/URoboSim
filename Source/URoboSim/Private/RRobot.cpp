@@ -92,32 +92,34 @@ void ARRobot::BeginPlay()
 void ARRobot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	// UE_LOG(LogTemp, Log, TEXT("Testing"));
+    /*
+    UE_LOG(LogTemp, Log, TEXT("Testing"));
 
-//    if (GFrameCounter % 5 == 0)
-//    {
-//        // Get All Rigid Bodies Rotation
-//        /*UE_LOG(LogTemp, Log, TEXT("At Frame [%d], Size of LinkComponents = [%d]"), GFrameCounter, LinkComponents.Num());
-//        for (auto &LinkElement : LinkComponents)
-//        {
-//            UE_LOG(LogTemp, Log, TEXT("Component [%s], Location [%s], Rotation [%s]"),
-//                *LinkElement.Value->GetName(), *LinkElement.Value->GetComponentLocation().ToString(),
-//                *LinkElement.Value->GetComponentRotation().ToString());
-//        }*/
+    if (GFrameCounter % 5 == 0)
+    {
+        // Get All Rigid Bodies Rotation
+        UE_LOG(LogTemp, Log, TEXT("At Frame [%d], Size of LinkComponents = [%d]"), GFrameCounter, LinkComponents.Num());
+        for (auto &LinkElement : LinkComponents)
+        {
+            UE_LOG(LogTemp, Log, TEXT("Component [%s], Location [%s], Rotation [%s]"),
+                *LinkElement.Value->GetName(), *LinkElement.Value->GetComponentLocation().ToString(),
+                *LinkElement.Value->GetComponentRotation().ToString());
+        }
 
-//        for (auto &JointElement : JointComponents)
-//        {
-//            /* UE_LOG(LogTemp, Log, TEXT("Component [%s], Location [%s], Rotation [%s], Sw1, Sw2, Tw = [%.3f, %.3f, %.3f]"),
-//                *JointElement.Value->GetName(), *JointElement.Value->GetComponentLocation().ToString(),
-//                *JointElement.Value->GetComponentRotation().ToString(),
-//                JointElement.Value->GetCurrentSwing1(),
-//                JointElement.Value->GetCurrentSwing2(),
-//                JointElement.Value->GetCurrentTwist()
-//                );*/
-//            GetJointPosition(JointElement.Key);
-//            GetJointVelocity(JointElement.Key);
-//        }
-//    }
+        for (auto &JointElement : JointComponents)
+        {
+             UE_LOG(LogTemp, Log, TEXT("Component [%s], Location [%s], Rotation [%s], Sw1, Sw2, Tw = [%.3f, %.3f, %.3f]"),
+                *JointElement.Value->GetName(), *JointElement.Value->GetComponentLocation().ToString(),
+                *JointElement.Value->GetComponentRotation().ToString(),
+                JointElement.Value->GetCurrentSwing1(),
+                JointElement.Value->GetCurrentSwing2(),
+                JointElement.Value->GetCurrentTwist()
+                );
+            GetJointPosition(JointElement.Key);
+            GetJointVelocity(JointElement.Key);
+        }
+    }
+    */
 }
 
 void ARRobot::OnConstruction(const FTransform &Transform)
@@ -145,14 +147,14 @@ void ARRobot::OnConstruction(const FTransform &Transform)
 bool ARRobot::AddLink(FRLink Link)
 {
 	FRLink LinkToAdd(Link);
-	Links.Add(LinkToAdd);
+	Links.AddUnique(LinkToAdd);
 	return true;
 }
 
 bool ARRobot::AddJoint(FRJoint Joint)
 {
 	FRJoint JointToAdd(Joint);
-	Joints.Add(JointToAdd);
+	Joints.AddUnique(JointToAdd);
 	return true;
 }
 
@@ -163,8 +165,8 @@ bool ARRobot::CreateRobot()
 		return false;
 	}
 
-	// Since every Link other than the base link has to be connected to another link the number of joints is fixed
-	if (Joints.Num() != Links.Num() - 1)
+	// Since every Link other than the base link or the gripple parallel links has to be connected to another link the number of joints is fixed
+	if (Joints.Num() != Links.Num() - 5)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Robot is invalid. Abort creating.\n"));
 		//return false;

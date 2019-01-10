@@ -3,6 +3,7 @@
 #include "GameFramework/Pawn.h"
 #include "PhysXIncludes.h"
 #include "PhysicsPublic.h"
+#include "Physics/PhysicsInterfacePhysX.h"
 #include "Runtime/Engine/Private/PhysicsEngine/PhysXSupport.h"
 
 void FMySecondaryTickFunction::ExecuteTick(
@@ -51,7 +52,7 @@ void URStaticMeshComponent::BeginPlay()
 		SecondaryComponentTick.RegisterTickFunction(owner->GetLevel());
 	}
 
-	PRigidBody = GetBodyInstance()->GetPxRigidBody_AssumesLocked();
+	PRigidBody = FPhysicsInterface_PhysX::GetPxRigidBody_AssumesLocked(GetBodyInstance()->GetPhysicsActorHandle());
 
 	StartH = GetComponentLocation().Z;
 }
