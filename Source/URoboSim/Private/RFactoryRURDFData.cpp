@@ -188,10 +188,10 @@ FString URFactoryRURDFData::AdeptXml(const FString PathToXml,
 		if (Line.Contains("mesh filename") && (Line.Contains("fbx") || Line.Contains("stl") || Line.Contains("dae"))&& !bInComment) {
 
 			// Standardizes the file paths for the Xml
-			Line = Line.Replace((L"\\"), (L"/"), ESearchCase::IgnoreCase);
-			Line = Line.Replace((L"package://"), (L"/"), ESearchCase::IgnoreCase);
-			Line = Line.Replace((L".stl"), (L".fbx"), ESearchCase::IgnoreCase);
-			Line = Line.Replace((L".dae"), (L".fbx"), ESearchCase::IgnoreCase);
+			Line = Line.Replace(TEXT("\\"), TEXT("/"), ESearchCase::IgnoreCase);
+			Line = Line.Replace(TEXT("package://"), TEXT("/"), ESearchCase::IgnoreCase);
+			Line = Line.Replace(TEXT(".stl"), TEXT(".fbx"), ESearchCase::IgnoreCase);
+			Line = Line.Replace(TEXT(".dae"), TEXT(".fbx"), ESearchCase::IgnoreCase);
 			FString SaveLine = Line;
 
 			// Delete everything before the path.
@@ -201,7 +201,7 @@ FString URFactoryRURDFData::AdeptXml(const FString PathToXml,
 
 			// Deletes information to get the path. 
 			Line.RemoveAt(0, Line.Find("\""), true);
-			PathToFbx = PathToFbx.Replace(*Line, (L""), ESearchCase::IgnoreCase);
+			PathToFbx = PathToFbx.Replace(*Line, TEXT(""), ESearchCase::IgnoreCase);
 
 			// FString that stores the mesh name. Only fbx files are allowed.
 			FString FbxName = FPaths::GetBaseFilename(PathToFbx, true);
