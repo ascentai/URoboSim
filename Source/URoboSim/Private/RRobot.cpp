@@ -9,6 +9,11 @@
 #include "Runtime/Engine/Classes/Engine/StaticMeshActor.h"
 #include "UnrealEd.h"
 #include "Engine/EngineTypes.h"
+// ROS integration
+#include "ROSIntegration/Classes/RI/Topic.h"
+#include "ROSIntegration/Classes/ROSIntegrationGameInstance.h"
+#include "ROSIntegration/Public/std_msgs/String.h"
+
 
 // Sets default values
 ARRobot::ARRobot()
@@ -59,6 +64,7 @@ ARRobot::ARRobot()
 	{
 		SphereMesh = MeshSp.Object;
 	}
+
 	/* Material support disabled for now
 	if (Material.Succeeded())
 	{
@@ -85,7 +91,19 @@ void ARRobot::BeginPlay()
 		else
 			UE_LOG(LogTemp, Warning, TEXT("Error correcting location of link %s\n"), LinkName.GetCharArray().GetData());
 	}
-	
+    if (bEnableUROSBridge)
+    {
+        // Init the name topic
+        UTopic *RobotNameTopic = NewObject<UTopic>(UTopic::StaticClass());
+        UROSIntegrationGameInstance* rosinst = Cast<UROSIntegrationGameInstance>(GetGameInstance());
+        RobotNameTopic->Init(rosinst->ROSIntegrationCore, TEXT("/robot_name"), TEXT("std_msgs/String"));
+        RobotNameTopic->Advertise();
+
+        // Pack name message
+        TSharedPtr<ROSMessages::std_msgs::String> RobotNameMessage(new ROSMessages::std_msgs::String(RobotName));
+        // To let everyone know my name
+        RobotNameTopic->Publish(RobotNameMessage);
+    }
 }
 
 // Called every frame (currently not active)
