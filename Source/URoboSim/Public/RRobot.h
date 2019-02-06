@@ -62,9 +62,6 @@ public:
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ROS Bridge") - 
 	//bool bEnableROSBridge;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ROS Bridge")
-    FString RobotName;
-
 	//URoboSimEd Variables
 	TArray<FString> collisionFilterArr; //holds links on which self-collision should be disabled
 	bool bEnableUROSBridge; //holds links on which self-collision should be disabled
